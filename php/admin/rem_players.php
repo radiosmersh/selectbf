@@ -4,6 +4,8 @@ require("../include/sql.php");
 require("admin_func.php");
 require_once("../templates/original/config.php");
 
+use clausvb\vlib\vlibTemplate as vlibTemplate;
+
 if(!isAdmin())
 {
 	Header("Location: login.php");
@@ -31,11 +33,11 @@ if(isset($_REQUEST["search_name"]))
 {
 	$searchresults = array();
 	$playername = $_REQUEST["search_name"];
-	$playername = mysql_real_escape_string($playername); 
+	$playername = mysqli_real_escape_string($playername); 
 	
 	$found = false;
-	$res = SQL_query("select id, name, CONCAT(TIME_FORMAT(inserttime,'%H:%i:%S '),DATE_FORMAT(inserttime,'%d|%m|%Y')) time from selectbf_players WHERE name LIKE '%$playername%' ORDER BY name ASC");
-	while($cols = SQL_fetchArray($res))
+	$res = SQL_query("select id, name, CONCAT(TIME_FORMAT(inserttime,'%H:%i:%S '),DATE_FORMAT(inserttime,'%d|%m|%Y')) time from selectbf_players WHERE name LIKE ? ORDER BY name ASC", ["%".$playername."%"]);
+	while($cols = $res->fetch_assoc())
 	{
 		$found = true;
 		$cols["deletelink"] = "r_rem_players.php?todo=delete&id=".$cols["id"];

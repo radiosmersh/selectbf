@@ -1,16 +1,12 @@
 <?php
 require("admin_func.php");
-require("update_sql.php");
+require("../include/sql.php");
+
+use clausvb\vlib\vlibTemplate as vlibTemplate;
+
 //read the needed vars
-// Bugs fixed by jrivett 2009Feb26
-// Look at admin_pass instead of html argument to see if we are operating
-// from the command line, since html argument is always used.
-// Also change condition to check whether admin_pass IS set, not whether it is NOT set.
-//$html = $_REQUEST["html"];
-$admin_pass = $_REQUEST["admin_pass"];
 $html = $_REQUEST["html"];
-//if(!isset($html)){
-if(isset($admin_pass)){
+if(!isset($html)){
 	$numargs = $_SERVER['argc'];
 	if($numargs == 3){
 		$fullpath = $_SERVER['argv'][0];
@@ -37,7 +33,7 @@ function update_clan($is_html){
 	$clanname = array();
 	$res = SQL_query("select * from selectbf_clan_tags");
 
-	while($cols = SQL_fetchArray($res))
+	while($cols = $res->fetch_assoc())
 	{
 		array_push($clanname, $cols);
 	}
@@ -73,12 +69,12 @@ function update_clan($is_html){
 		if(stristr($_ENV["TERM"],"linux"))
 			$clantag = str_replace("\\","",$clantag);
 		//At least 1(Default Value) round played for each member
-		$res = SQL_query("SELECT * from selectbf_cache_ranking where playername like '%".clear_special_char($clantag,true)."%' and rounds_played >= $minround");
-		$members = mysql_num_rows($res);
+		$res = SQL_query("SELECT * from selectbf_cache_ranking where playername like ? and rounds_played >= ?", ["%".clear_special_char($clantag,true)."%", $minround]);
+		$members = mysqli_num_rows($res);
 		$clantag = str_replace("%","",$clanname[$i]["clan_tag"]);
 		//At least 3(Default Value) members for each team (clan)
 		if($members >= $minmember){
-			while($clancols = SQL_fetchArray($res)){
+			while($clancols = $res->fetch_assoc()){
 				$score        += $clancols['score'];
 				$kills         += $clancols['kills'];
 				$deaths        += $clancols['deaths'];
@@ -98,12 +94,35 @@ function update_clan($is_html){
 				$third		   += $clancols['third'];
 			}
 			$kdrate = round($kills / $deaths, 2);
-			$clanres = SQL_query("SELECT * from selectbf_clan_ranking where clanname = '".clear_special_char($clantag,true)."'");
-			if(mysql_num_rows($clanres) > 0){
-				SQL_query("update selectbf_clan_ranking SET members='$members', score='$score', kills='$kills', deaths='$deaths', kdrate='$kdrate', tks='$tks', captures='$captures', attacks='$attacks', defences='$defences', objectives='$objectives', objectivetks='$objectivetks', heals='$heals', selfheals='$selfheals', repairs='$repairs', otherrepairs='$otherrepairs', rounds_played='$rounds_played', first='$first', second='$second', third='$third' where clanname = '".clear_special_char($clantag,true)."'");
+			$clanres = SQL_query("SELECT * from selectbf_clan_ranking where clanname = ?", [clear_special_char($clantag,true)]);
+			if(mysqli_num_rows($clanres) > 0){
+				SQL_query("update selectbf_clan_ranking SET members=?, score=?, kills=?, deaths=?, kdrate=?, tks=?, captures=?, attacks=?, defences=?, objectives=?, objectivetks=?, heals=?, selfheals=?, repairs=?, otherrepairs=?, rounds_played=?, first=?, second=?, third=? where clanname = ?",
+				[
+					$members,
+					$score,
+					$kills,
+					$deaths,
+					$kdrate,
+					$tks,
+					$captures,
+					$attacks,
+					$defences,
+					$objectives,
+					$objectivetks,
+					$heals,
+					$selfheals,
+					$repairs,
+					$otherrepairs,
+					$rounds_played,
+					$first,
+					$second,
+					$third,
+					clear_special_char($clantag,true)
+				]
+			);
 				$update_method = "Updated ";
 			}else{
-				SQL_query("INSERT INTO selectbf_clan_ranking (ranks, clanname, members, score, kills, deaths, kdrate, tks, captures, attacks, defences, objectives, objectivetks, heals, selfheals, repairs, otherrepairs, rounds_played, first, second, third) VALUES('NULL', '".clear_special_char($clantag,true)."', '$members', '$score', '$kills', '$deaths', '$kdrate', '$tks', '$captures', '$attacks', '$defences', '$objectives', '$objectivetks', '$heals', '$selfheals', '$repairs', '$otherrepairs', '$rounds_played', '$first', '$second', '$third')");
+				SQL_query("INSERT INTO selectbf_clan_ranking (ranks, clanname, members, score, kills, deaths, kdrate, tks, captures, attacks, defences, objectives, objectivetks, heals, selfheals, repairs, otherrepairs, rounds_played, first, second, third) VALUES(0, '".clear_special_char($clantag,true)."', '$members', '$score', '$kills', '$deaths', '$kdrate', '$tks', '$captures', '$attacks', '$defences', '$objectives', '$objectivetks', '$heals', '$selfheals', '$repairs', '$otherrepairs', '$rounds_played', '$first', '$second', '$third')");
 				$update_method = "Inserted ";
 			}
 			//
@@ -115,9 +134,9 @@ function update_clan($is_html){
 				echo $update_method . "Total " . ($i+1) . " out of " . count($clanname) . " \"Clan Ranking\"" . " Counted " . $clantag . " in.\n";
 			}
 		}else{
-			$clanres = SQL_query("SELECT * from selectbf_clan_ranking where clanname = '".clear_special_char($clantag,true)."'");
-			if(mysql_num_rows($clanres) > 0){
-				SQL_query("DELETE FROM selectbf_clan_ranking where clanname = '".clear_special_char($clantag,true)."'");
+			$clanres = SQL_query("SELECT * from selectbf_clan_ranking where clanname = ?", [clear_special_char($clantag,true)]);
+			if(mysqli_num_rows($clanres) > 0){
+				SQL_query("DELETE FROM selectbf_clan_ranking where clanname = ?", [clear_special_char($clantag,true)]);
 				$update_method = " is deleted caused by there is no enough Member or Round Played!";
 			}else{
 				$update_method = " is not added caused by there is no enough Member or Round Played!";

@@ -4,6 +4,8 @@ require("../include/sql.php");
 require("admin_func.php");
 require_once("../templates/original/config.php");
 
+use clausvb\vlib\vlibTemplate as vlibTemplate;
+
 if(!isAdmin())
 {
 	Header("Location: login.php");
@@ -37,10 +39,10 @@ if(checkFilePathConsistency($path, "update_clans.php") && $clantablesetup){
 	$tmpl->setVar("addclantag", true);
 	$tmpl->setVar("new_clan_tag","clan_tag");
 	$res = SQL_query("select clan_tag from selectbf_clan_tags");
-	if(mysql_num_rows($res) > 0)
+	if(mysqli_num_rows($res) > 0)
 	{
 		$addedresults = array();
-		while($cols = SQL_fetchArray($res))
+		while($cols = $res->fetch_assoc())
 		{
 			$cols["deletelink"] = "r_clantag.php?todo=delete&id=" . $cols["clan_tag"];
 			array_push($addedresults,$cols);

@@ -1,8 +1,9 @@
 <?
-require_once("include/jpcache/jpcache.php");
 require_once("include/vLib/vlibTemplate.php");
 require_once("include/sql.php");
 require_once("include/func.php");
+
+use clausvb\vlib\vlibTemplate as vlibTemplate;
 
 //start the processtime-timer
 $starttime=timer();
@@ -35,8 +36,8 @@ $tmpl->setVar("ADMINMODE_LINK","admin/index.php");
 $tmpl->setLoop("NAVBAR",getNavBar());
 
 $contextbar = array();
-$contextbar = addContextItem($contextbar,getActiveTitlePrefix()."-statistics");
-$contextbar = addLinkedContextItem($contextbar,"index.php","Ranking");
+$contextbar = addContextItem($contextbar,getActiveTitlePrefix());
+$contextbar = addLinkedContextItem($contextbar,"index.php","Players");
 $tmpl->setLoop("CONTEXTBAR",$contextbar);
 
 
@@ -50,9 +51,8 @@ if($search=="players")
 {
 	$tmpl->setVar("isPlayerSearch",true);
 	$playername = $_REQUEST["playername"];
-	$playername = mysql_real_escape_string($playername);
-	$res = SQL_query("select id, name, CONCAT(TIME_FORMAT(inserttime,'%H:%i:%S '),DATE_FORMAT(inserttime,'%d|%m|%Y')) time from selectbf_players WHERE name LIKE '%$playername%' ORDER BY name ASC");
-	while($cols = SQL_fetchArray($res))
+	$res = SQL_query("select id, name, CONCAT(DATE_FORMAT(inserttime,'%Y-%m-%d '),TIME_FORMAT(inserttime,'%H:%i:%S')) time from selectbf_players WHERE name LIKE ? ORDER BY name ASC", ['%'.$playername.'%']);
+	while($cols = $res->fetch_assoc())
 	{
 		$cols["playerdetaillink"] = "player.php?id=".$cols["id"];
 		$cols["playerimg"] = randomPlayerImg();
@@ -64,7 +64,6 @@ if($search=="games")
 {
 	$tmpl->setVar("isGameSearch",true);
 	$servername = $_REQUEST["servername"];
-	$servername = mysql_real_escape_string($servername);
 	$day = $_REQUEST["day"];
 	$month = $_REQUEST["month"];
 	$year = $_REQUEST["year"];
@@ -73,19 +72,19 @@ if($search=="games")
 	$res = null;
 	if($year=="nothing" || $month=="nothing" || $day=="nothing")
     {
-    	// Bug fixed by jrivett 2009Feb26
-		// Fixed server search by quoting mod.
-		//$res = SQL_query("select id, servername,modid mod,map,game_mode, CONCAT(TIME_FORMAT(starttime,'%H:%i:%S '),DATE_FORMAT(starttime,'%d|%m|%Y')) time from selectbf_games WHERE servername LIKE '%$servername%' AND modid='$mod' ORDER BY starttime ASC");
-    	$res = SQL_query("select id, servername,modid 'mod',map,game_mode, CONCAT(TIME_FORMAT(starttime,'%H:%i:%S '),DATE_FORMAT(starttime,'%d|%m|%Y')) time from selectbf_games WHERE servername LIKE '%$servername%' AND modid='$mod' ORDER BY starttime ASC");
+    	$res = SQL_query("select id, servername,modid mod,map,game_mode, CONCAT(TIME_FORMAT(starttime,'%H:%i:%S '),DATE_FORMAT(starttime,'%d|%m|%Y')) time from selectbf_games WHERE servername LIKE ? AND modid=? ORDER BY starttime ASC", ['%'.$servername.'%', $mod]);
     } 
     else
     {
-    	// Bug fixed by jrivett 2009Feb26
-		// Fixed server search by quoting mod.
-    	//$res = SQL_query("select id, servername,modid mod,map,game_mode, CONCAT(TIME_FORMAT(starttime,'%H:%i:%S '),DATE_FORMAT(starttime,'%d|%m|%Y')) time from selectbf_games WHERE servername LIKE '%$servername%' AND starttime BETWEEN '$year-$month-$day 00:00:00' and '$year-$month-$day 23:59:59' and modid='$mod' ORDER BY starttime ASC");
-    	$res = SQL_query("select id, servername,modid 'mod',map,game_mode, CONCAT(TIME_FORMAT(starttime,'%H:%i:%S '),DATE_FORMAT(starttime,'%d|%m|%Y')) time from selectbf_games WHERE servername LIKE '%$servername%' AND starttime BETWEEN '$year-$month-$day 00:00:00' and '$year-$month-$day 23:59:59' and modid='$mod' ORDER BY starttime ASC");
+    	$res = SQL_query("select id, servername,modid mod,map,game_mode, CONCAT(TIME_FORMAT(starttime,'%H:%i:%S '),DATE_FORMAT(starttime,'%d|%m|%Y')) time from selectbf_games WHERE servername LIKE ? AND starttime BETWEEN ? and ? and modid=? ORDER BY starttime ASC",
+			[
+				'%'.$servername.'%',
+				$year.'-'.$month.'-'.$day.' 00:00:00',
+				$year.'-'.$month.'-'.$day.' 23:59:59',
+				$mod
+			]);
     }
-    while($cols = SQL_fetchArray($res))
+    while($cols = $res->fetch_assoc())
 	{
 		$cols["map"] = clearUpText($cols["map"],"MAP");
 		$cols["game_mode"] = clearUpText($cols["game_mode"],"GAME-MODE");

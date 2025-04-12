@@ -1,8 +1,9 @@
 <?
-require_once("include/jpcache/jpcache.php");
 require_once("include/vLib/vlibTemplate.php");
 require_once("include/sql.php");
 require_once("include/func.php");
+
+use clausvb\vlib\vlibTemplate as vlibTemplate;
 
 //start the processtime-timer
 $starttime=timer();
@@ -22,16 +23,27 @@ else
 
 //read the base parameters
 $start = "";
-@$start = $_REQUEST["start"];
+
+if (isset($_REQUEST["start"])){
+    @$start = $_REQUEST["start"];
+}
 
 $orderby = "";
-@$orderby = $_REQUEST["orderby"];
+if (isset($_REQUEST["orderby"])){
+    @$orderby = $_REQUEST["orderby"];
+}
 
 $direction = "";
-@$direction = $_REQUEST["direction"];
+
+if (isset($_REQUEST["direction"])){
+    @$direction = $_REQUEST["direction"];
+}
 
 $startgames = "";
-@$startgames = $_REQUEST["startgames"];
+
+if (isset($_REQUEST["startgames"])){
+    @$startgames = $_REQUEST["startgames"];
+}
 
 if($start == "")
 {
@@ -59,15 +71,15 @@ if(!checkTemplateConsistency($TEMPLATE_DIR,"index.html"))
 $tmpl = new vlibTemplate("templates/$TEMPLATE_DIR/index.html");
 
 //set basic Template-Variables
-$tmpl->setVar("TITLE",getActiveTitlePrefix()." - Ranking Overview");
+$tmpl->setVar("TITLE",getActiveTitlePrefix()." - Player Ranking");
 $tmpl->setVar("CSS","templates/$TEMPLATE_DIR/include/$TMPL_CFG_CSS");
 $tmpl->setVar("IMAGES_DIR","templates/$TEMPLATE_DIR/images/");
 $tmpl->setVar("ADMINMODE_LINK","admin/index.php");
 $tmpl->setLoop("NAVBAR",getNavBar());
 
 $contextbar = array();
-$contextbar = addContextItem($contextbar,getActiveTitlePrefix()."-statistics");
-$contextbar = addLinkedContextItem($contextbar,"index.php","Ranking");
+$contextbar = addContextItem($contextbar,getActiveTitlePrefix());
+$contextbar = addLinkedContextItem($contextbar,"index.php","Players");
 $tmpl->setLoop("CONTEXTBAR",$contextbar);
 
 
@@ -133,8 +145,8 @@ $tmpl->setLoop("ranking",$res);
 
 //the Ranking-navbar information
 $minrounds = getActiveMinRoundsValue();
-$res = SQL_query("select player_id, count(*) rounds from selectbf_playerstats group by player_id having rounds >= $minrounds order by rounds desc");
-$totalplayercount = mysql_num_rows($res);
+$res = SQL_query("select player_id, count(*) rounds from selectbf_playerstats group by player_id having rounds >= ? order by rounds desc", [$minrounds]);
+$totalplayercount = mysqli_num_rows($res);
 
 $res = getRankingNavBar($totalplayercount,$start,$orderby,$direction);
 $tmpl->setLoop("navbarinforank",$res);
@@ -186,26 +198,12 @@ else
 }	 	
 
 
-$Res = SQL_query("select DISTINCT modid from selectbf_games");
-$mods = array();
-while($Erg = SQL_fetchArray($Res))
-{
-  	array_push($mods,array("name"=>$Erg["modid"]));
-}	
-  
 $tmpl->setVar("search_action","search.php");
   
-$tmpl->setVar("search_type_games","games");
 $tmpl->setVar("search_type_players","players");
    
 $tmpl->setVar("search_param_searchtype","search");
-$tmpl->setVar("search_param_servername","servername");
-$tmpl->setVar("search_param_day","day");
-$tmpl->setVar("search_param_month","month");
-$tmpl->setVar("search_param_year","year");
-$tmpl->setVar("search_param_mod","mod");
 $tmpl->setVar("search_param_playername","playername");
-$tmpl->setLoop("search_mods",$mods);
 
 //now finish the processtime timer
 $totaltime = timer()- $starttime;

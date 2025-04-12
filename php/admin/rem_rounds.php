@@ -4,6 +4,8 @@ require("../include/sql.php");
 require("admin_func.php");
 require_once("../templates/original/config.php");
 
+use clausvb\vlib\vlibTemplate as vlibTemplate;
+
 if(!isAdmin())
 {
 	Header("Location: login.php");
@@ -32,7 +34,7 @@ if(isset($_REQUEST["id"]))
 	$searchresults = array();
 	$id = $_REQUEST["id"];
 
-    @$cols = SQL_oneRowQuery("select id,servername,modid 'mod',mapid,map,game_mode,gametime,maxplayers,scorelimit,spawntime,soldierff,vehicleff,tkpunish,deathcamtype,CONCAT(TIME_FORMAT(starttime,'%H:%i:%S '),DATE_FORMAT(starttime,'%d|%m|%Y')) date from selectbf_games where id=$id");
+    @$cols = SQL_oneRowQuery("select id,servername,modid 'mod',mapid,map,game_mode,gametime,maxplayers,scorelimit,spawntime,soldierff,vehicleff,tkpunish,deathcamtype,CONCAT(TIME_FORMAT(starttime,'%H:%i:%S '),DATE_FORMAT(starttime,'%d|%m|%Y')) date from selectbf_games where id=?", [$id]);
     if($cols)
     {
     	$cols["map"] = clearUpText($cols['map'],"MAP");
@@ -42,8 +44,8 @@ if(isset($_REQUEST["id"]))
     }
 	
 	$found = false;
-	$res = SQL_query("select id,start_tickets_team1,start_tickets_team2,CONCAT(TIME_FORMAT(starttime,'%H:%i:%S '),DATE_FORMAT(starttime,'%d|%m|%Y')) starttime,end_tickets_team1,end_tickets_team2,CONCAT(TIME_FORMAT(endtime,'%H:%i:%S '),DATE_FORMAT(endtime,'%d|%m|%Y')) endtime,endtype,winning_team from selectbf_rounds where game_id=$id order by starttime ASC");
-	while($cols = SQL_fetchArray($res))
+	$res = SQL_query("select id,start_tickets_team1,start_tickets_team2,CONCAT(TIME_FORMAT(starttime,'%H:%i:%S '),DATE_FORMAT(starttime,'%d|%m|%Y')) starttime,end_tickets_team1,end_tickets_team2,CONCAT(TIME_FORMAT(endtime,'%H:%i:%S '),DATE_FORMAT(endtime,'%d|%m|%Y')) endtime,endtype,winning_team from selectbf_rounds where game_id=? order by starttime ASC", [$id]);
+	while($cols = $res->fetch_assoc())
 	{
 		$found = true;
 		$cols["deletelink"] = "r_rem_rounds.php?&gameid=".$id."&todo=round&id=".$cols["id"];

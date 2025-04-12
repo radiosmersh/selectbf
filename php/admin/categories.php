@@ -4,6 +4,8 @@ require("../include/sql.php");
 require("admin_func.php");
 require_once("../templates/original/config.php");
 
+use clausvb\vlib\vlibTemplate as vlibTemplate;
+
 if(!isAdmin())
 {
 	Header("Location: login.php");

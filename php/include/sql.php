@@ -1,5 +1,46 @@
 <?php
-require("sql_setting.php");
+
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+try {
+        require("sql_setting.php");
+        $conn = new mysqli($SQL_host, $SQL_user, $SQL_password, $SQL_datenbank, 3306);
+} 
+catch(\mysqli_sql_exception $e) {
+        throw new \mysqli_sql_exception($e->getMessage(), $e->getCode());
+        die(SQL_error("",""));
+} 
+finally {
+        unset($host, $username, $password, $charset, $db);
+}
+
+function SQL_query($sql, $params = NULL, $types = "")
+{
+        global $conn;
+        $stmt = $conn->prepare($sql);
+        if ($params)
+        {
+                $types = $types ?: str_repeat("s", count($params));
+                $stmt->bind_param($types, ...$params);
+        }
+        $stmt->execute();
+        $res = $stmt->get_result();
+	return $res;
+}
+
+function SQL_oneRowQuery($sql, $params = NULL, $types = "")
+{
+        global $conn;
+        $stmt = $conn->prepare($sql);
+        if ($params)
+        {
+                $types = $types ?: str_repeat("s", count($params));
+                $stmt->bind_param($types, ...$params);
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+}
+
 
 function SQL_error($msg,$sql)
 {
@@ -33,52 +74,9 @@ function SQL_error($msg,$sql)
 	<?
 }
 
-function SQL_connect()
-{
-	GLOBAL $SQL_host,$SQL_user,$SQL_datenbank,$SQL_password;
-	$con = mysql_connect($SQL_host,$SQL_user,$SQL_password) or die(SQL_error(mysql_error(),"at connect"));
-	mysql_select_db($SQL_datenbank);
-	return $con;
-}
-
-
-function SQL_query($sql)
-{
-	GLOBAL $DBVerbindung;
-	$res = mysql_query($sql,$DBVerbindung) or die(SQL_error(mysql_error(),$sql));
-	
-	return $res;
-}
-
-function SQL_oneRowQuery($sql)
-{
-	GLOBAL $DBVerbindung;
-	$res = mysql_query($sql,$DBVerbindung) or die(SQL_error(mysql_error(),$sql));
-	$Zeile = SQL_fetchArray($res);
-	return $Zeile;
-}
-
-function SQL_fetchArray($ResultSet)
-{
-        $row = mysql_fetch_array($ResultSet,MYSQL_ASSOC);
-        return $row;
-}
-
 function SQL_resetResult($ResultSet)
 {
-	@mysql_data_seek($ResultSet,0); 
+	@mysqli_data_seek($ResultSet,0); 
 }
 
-function SQL_containsRows($ResultSet)
-{
-	if($row = mysql_fetch_array($ResultSet,MYSQL_ASSOC))
-	{
-		@mysql_data_seek($ResultSet,0); 
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
 ?>

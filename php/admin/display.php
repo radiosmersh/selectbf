@@ -4,6 +4,8 @@ require("../include/sql.php");
 require("admin_func.php");
 require_once("../templates/original/config.php");
 
+use clausvb\vlib\vlibTemplate as vlibTemplate;
+
 if(!isAdmin())
 {
 	Header("Location: login.php");
@@ -31,7 +33,7 @@ $tmpl->setVar("param_minrounds","minrounds");
 $tmpl->setVar("starnumber",getStarNumber());
 $tmpl->setVar("param_starnumber","starnumber");
 
-$orderbycolumn = getRankOrderbyColumn();
+$orderbycolumn = getRankOrderByColumn();
 $tmpl->setVar("orderbycolumn",$orderbycolumn);
 
 //Added By Gary Chiu

@@ -15,8 +15,8 @@ if(isAdmin())
 	if($todo == "delete")
 	{
 		$id = $_REQUEST["id"];
-		SQL_query("DELETE FROM selectbf_clan_tags where clan_tag = '".clear_special_char($id,false)."'");
-		SQL_query("DELETE FROM selectbf_clan_ranking where clanname = '".clear_special_char($id,false)."'");
+		SQL_query("DELETE FROM selectbf_clan_tags where clan_tag = ?", [clear_special_char($id,false)]);
+		SQL_query("DELETE FROM selectbf_clan_ranking where clanname = ?", [clear_special_char($id,false)]);
 		msg("Clan Tag: $id <b>deleted</b>!<br>");			
 	}
     Header("Location: clantag.php");

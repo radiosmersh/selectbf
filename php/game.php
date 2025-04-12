@@ -1,8 +1,9 @@
 <?
-require_once("include/jpcache/jpcache.php");
 require_once("include/vLib/vlibTemplate.php");
 require_once("include/sql.php");
 require_once("include/func.php");
+
+use clausvb\vlib\vlibTemplate as vlibTemplate;
 
 //start the processtime-timer
 $starttime=timer();
@@ -52,8 +53,8 @@ $tmpl->setLoop("rounds",getRoundsForGame($id));
 
 //set Context-Bar at the end to have gameinfos
 $contextbar = array();
-$contextbar = addContextItem($contextbar,getActiveTitlePrefix()."-statistics");
-$contextbar = addLinkedContextItem($contextbar,"index.php","Ranking");
+$contextbar = addContextItem($contextbar,getActiveTitlePrefix());
+$contextbar = addLinkedContextItem($contextbar,"index.php","Players");
 $contextbar = addContextItem($contextbar,$gameinfos["servername"]." - ".$gameinfos["map"]." - ".$gameinfos["date"]);
 $tmpl->setLoop("CONTEXTBAR",$contextbar);
 
