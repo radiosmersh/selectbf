@@ -7,13 +7,17 @@
 // +----------------------------------------------------------------------+
 // | Authors: Kelvin Jones <kelvin@kelvinjones.co.uk>                     |
 // +----------------------------------------------------------------------+
+// | Artistic License 2.0                                                 |
+// +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: error.php,v 1.5 2004/01/07 22:00:20 releasedj Exp $
 
-define('FATAL', E_USER_ERROR);
-define('WARNING', E_USER_WARNING);
-define('NOTICE', E_USER_NOTICE);
-define('KILL',   -1); // used for killing inside parsing.
+namespace clausvb\vlib;
+
+if (!defined('FATAL')) 		define('FATAL', E_USER_ERROR);
+if (!defined('WARNING')) 	define('WARNING', E_USER_WARNING);
+if (!defined('NOTICE')) 	define('NOTICE', E_USER_NOTICE);
+if (!defined('KILL'))		define('KILL',   -1); // used for killing inside parsing.
 
 /**
  * Class is used by vlibTemplate.
@@ -31,12 +35,12 @@ class vlibTemplateError {
 |     DO NOT TOUCH ANYTHING IN THIS CLASS IT MAY NOT WORK OTHERWISE            |
 \-----------------------------------------------------------------------------*/
 
-    function raiseError ($code, $level = null, $extra=null) {
+    public static function raiseError ($code, $level = null, $extra=null) {
         if (!($level & error_reporting())&& $level != KILL) return; // binary AND checks for reporting level
 
         $error_codes = array(
                         'VT_ERROR_NOFILE'               => 'vlibTemplate Error: Template ('.$extra.') file not found.',
-                        'VT_ERROR_PARSE'                => 'vlibTemplate Error: Parse error!<br>To debug this file, use vlibTemplateDebug instead of vlibTemplate in the class instantiation(i.e. new vlibTemplateDebug).',
+                        'VT_ERROR_PARSE'                => 'vlibTemplate Error: Parse error! If you try to create XML output including <?xml ... remember to turn off short_open_tag in php.ini! To debug this file, use vlibTemplateDebug instead of vlibTemplate in the class instantiation(i.e. new vlibTemplateDebug).',
                         'VT_NOTICE_INVALID_TAG'         => 'vlibTemplate Notice: Invalid tag ('.$extra.').',
                         'VT_ERROR_INVALID_TAG'          => 'vlibTemplate Error: Invalid tag ('.$extra.'). To disable this you must turn of the STRICT option.',
                         'VT_NOTICE_INVALID_ATT'         => 'vlibTemplate Notice: Invalid attribute ('.$extra.').',
@@ -50,6 +54,7 @@ class vlibTemplateError {
                         'VT_WARNING_NOT_CACHE_OBJ'      => 'vlibTemplate Warning: called a vlibTemplateCache function ('.$extra.') without instantiating the vlibTemplateCache class.',
                         'VT_WARNING_LOOP_NOT_SET'       => 'vlibTemplate Warning: called vlibTemplate::addRow() or vlibTemplate::addLoop() with an invalid loop name.',
                         'VT_WARNING_INVALID_RESOURCE'   => 'vlibTemplate Warning: Invalid resource type passed to vlibTemplate::setDbLoop() for Db "'.$extra.'".',
+                        'VT_WARNING_INVALID_CLASS'      => 'vlibTemplate Warning: Invalid class passed to vlibTemplate::setDbLoop() for Db "'.$extra.'".',
                         'VT_WARNING_INVALID_LOOP_DB'    => 'vlibTemplate Warning: Invalid Db type passed to vlibTemplate::setDbLoop(), "'.$extra.'" not currently available.',
                         'VT_WARNING_INVALID_IF_OP'      => 'vlibTemplate Warning: The Operator "'.$extra.'" is not supported by vlibTemplate.',
                         'VT_WARNING_NO_LOOP_NAME'       => 'vlibTemplate Warning: You must specify a loop name.'

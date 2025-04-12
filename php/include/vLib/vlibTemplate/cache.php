@@ -7,8 +7,12 @@
 // +----------------------------------------------------------------------+
 // | Authors: Kelvin Jones <kelvin@kelvinjones.co.uk>                     |
 // +----------------------------------------------------------------------+
+// | Artistic License 2.0                                                 |
+// +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: cache.php,v 1.4 2003/05/15 14:17:41 releasedj Exp $
+
+namespace clausvb\vlib;
 
 /**
  * Class uses all of vlibTemplate's functionality but caches the template files.

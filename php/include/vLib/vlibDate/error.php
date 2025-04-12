@@ -8,11 +8,13 @@
 // | Authors: Kelvin Jones <kelvin@kelvinjones.co.uk>                     |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: error.php,v 1.4 2004/01/07 22:00:20 releasedj Exp $
 
-define('FATAL', E_USER_ERROR);
-define('WARNING', E_USER_WARNING);
-define('NOTICE', E_USER_NOTICE);
+namespace clausvb\vlib;
+
+if (!defined('FATAL')) 		define('FATAL', E_USER_ERROR);
+if (!defined('WARNING')) 	define('WARNING', E_USER_WARNING);
+if (!defined('NOTICE')) 	define('NOTICE', E_USER_NOTICE);
 
 /**
  * Class is used by vlibDate.
