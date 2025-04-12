@@ -27,15 +27,8 @@
      <tr class="scoretable_hell"> 
        <td class="rahmen" background="{tmpl_var name='IMAGES_DIR'}bar_vertical_left.gif"></td>  
        <td class="rahmen" colspan="3">
-	     Welcome to your fresh installation of <b>select(<i>bf</i>)</b>!<p>
-	     This is the space where you can add your server-specific information and logos.<br>
-	     The best way is to copy the complete <i>default</i>-template to a new directory in the
-	     templates dir and change it the way you like.<br>
-	     The informations you are currently reading are contained in the <i>head.html</i> of the 
-	     <i>default</i> template.<p>
-	     If you want to create you own <b>Template-set</b>, you should see the <b>vLib Template</b> documentation
-	     at <a href="http://vlib.activefish.com" target=_blank>vlib.activefish.com</a>.<br>
-	     Also look throught the <i>TEMPLATING.TXT</i> that came with your <b>select(<i>bf</i>)</b> package.
+	     Welcome to <b>FHSW-Europe server statistics</b>!<p>
+		 <a href="https://www.gametracker.com/server_info/176.9.19.239:14567/" target="_blank"><img src="https://cache.gametracker.com/server_info/176.9.19.239:14567/b_560_95_1.png" border="0" width="560" height="95" alt=""/></a>
        </td>
        <td class="rahmen" background="{tmpl_var name='IMAGES_DIR'}/bar_vertical_right.gif"></td>
      </tr>
@@ -57,26 +50,26 @@
        <td class="rahmen" width=100%>
         <table class="scoretable" width=100%>
          <tr>
-         	<th class=scoretable>Navigation</th>       	
-			    <tmpl_loop name="CONTEXTBAR">
-			    <th class=scoretable>
-  			   <nobr>
-					 <img src="{tmpl_var name='IMAGES_DIR'}arrow_right.gif">
-				   <tmpl_if name="link"><a href="{tmpl_var name='link'}" class=scoretable></tmpl_if>
-		       <tmpl_var name="name">
-		       <tmpl_if name="link"></a></tmpl_if>
-		       </nobr>
-          </th>		       
-			   </tmpl_loop>
-				    <th class=scoretable width=100%></th>		   
-  		   </table>			   	
-			   <table width=100%>
-	  		   	<tr>
-			   <tmpl_loop name="NAVBAR">
-	  		   		<td class="navbarbutton"><a href="{tmpl_var name='link'}"><tmpl_var name='name'></a></td>
-         </tmpl_loop>			 
-           </tr>
-         </table>  
+          <th class=scoretable>Statistics</th>   
+	  <tmpl_loop name="CONTEXTBAR">
+	   <th class=scoretable>
+  	    <nobr>
+	    <img src="{tmpl_var name='IMAGES_DIR'}arrow_right.gif">
+	    <tmpl_if name="link"><a href="{tmpl_var name='link'}" class=scoretable></tmpl_if>
+	    <tmpl_var name="name">
+	    <tmpl_if name="link"></a></tmpl_if>
+	    </nobr>
+           </th>		       
+	  </tmpl_loop>
+	   <th class=scoretable width=100%></th>		   
+  	</table>			   	
+	<table width=100%>
+	 <tr>
+	  <tmpl_loop name="NAVBAR">
+	   <td class="navbarbutton"><a href="{tmpl_var name='link'}"><tmpl_var name='name'></a></td>
+          </tmpl_loop>			 
+         </tr>
+        </table>  
        </td>
        <td class="rahmen" background="{tmpl_var name='IMAGES_DIR'}bar_vertical_right.gif"></td>
      </tr>     

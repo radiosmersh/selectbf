@@ -22,7 +22,7 @@
        <td colspan=7><tmpl_var name="deaths_team1"></td>
      </tr>
      <tr class=axis_hell>
-       <td><img src="{tmpl_var name='IMAGES_DIR'}icon_attacks.gif" alt="Basepoint Conquers"></td>
+       <td><img src="{tmpl_var name='IMAGES_DIR'}icon_attacks.gif" alt="Conquests" title="Conquests"></td>
        <td colspan=7><tmpl_var name="attacks_team1"></td>
      </tr>
      <tr class=axis_dunkel>
@@ -52,7 +52,7 @@
        <td colspan=7><tmpl_var name="deaths_team2"></td>
      </tr>
      <tr class=allied_hell>
-       <td><img src="{tmpl_var name='IMAGES_DIR'}icon_attacks.gif" alt="Basepoint Conquers"></td>
+       <td><img src="{tmpl_var name='IMAGES_DIR'}icon_attacks.gif" alt="Conquests" title="Conquests"></td>
        <td colspan=7><tmpl_var name="attacks_team2"></td>
      </tr>
      <tr class=allied_dunkel>
@@ -75,10 +75,10 @@
      <th>Score</th>
      <th class=number>Kills</th>
      <th>Deaths</th>
-     <th><img src="{tmpl_var name='IMAGES_DIR'}icon_attacks.gif" alt="Basepoint Conquers"></th>
      <th>TKs</th>
+     <th>Conquests</th>
      <th>Game</th>     
-     <th>time</th>     
+     <th>Time</th>     
    </tr> 
 <tmpl_loop name="BestRounds">
    <tr>
@@ -86,8 +86,8 @@
      <td class=number><tmpl_var name="score"></td>
      <td class=number><tmpl_var name="kills"></td>
      <td class=number><tmpl_var name="deaths"></td>
-     <td class=number><tmpl_var name="attacks"></td>
      <td class=number><tmpl_var name="tks"></td>
+     <td class=number><tmpl_var name="attacks"></td>
      <td><a href="game.php?id={tmpl_var name='id'}"><tmpl_var name="servername"></a></td>
      <td class=number><tmpl_var name="time"></td>
    </tr>    
@@ -97,7 +97,7 @@
  <tmpl_if name="kills">
  <table width="95%" border="1" align="center">
    <tr class="head">
-     <th colspan="18" class="super" scope="col">TOP Killers</th>
+     <th colspan="18" class="super" scope="col">Top Killers</th>
    </tr>
    <tr class=head>
      <th class=number>Rank</th>
@@ -123,12 +123,12 @@
  <tmpl_if name="attacks">
   <table width="95%" border="1" align="center">
    <tr class="head">
-     <th colspan="18" class="super" scope="col">TOP Basepoint Conquerers</th>
+     <th colspan="18" class="super" scope="col">Top Basepoint Conquerors</th>
    </tr>
    <tr class=head>
      <th class=number>Rank</th>
      <th>Player</th>
-     <th class=number><img src="{tmpl_var name='IMAGES_DIR'}icon_attacks.gif" alt="Basepoint Conquers"></th>
+     <th class=number>Conquests</th>
      <th>&nbsp;</th>
    </tr>   
    <tmpl_loop name="attacks">
