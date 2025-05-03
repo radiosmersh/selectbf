@@ -64,7 +64,7 @@ public class PlayerStatsManagementBase extends ManagementBase
 	
 	public boolean isEmpty()
 	{
-		if(playerstats.size()==0)
+		if(playerstats.size() <= 1)
 		{
 			return true;
 		}
