@@ -26,6 +26,5 @@
  --> 	
  <logs>
   <dir live="true">/app/logs</dir>
-  <ftp host="${FTP_HOST}" port="${FTP_PORT}" user="${FTP_USER}" password="${FTP_PASSWORD}" live="true">/</ftp>
  </logs>
 </selectbf-config>
