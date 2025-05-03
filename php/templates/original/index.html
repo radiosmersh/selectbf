@@ -72,10 +72,11 @@
          </tr>
          </tmpl_loop>
          <!--NAV BAR FOR THE RANKING-->
+<tmpl_if name="RankNextButtonLink">
 	 <tr class="scoretable_dunkel">
 	  <td><tmpl_if name="RankPreviousButtonLink"><a href="{tmpl_var name="RankPreviousButtonLink"}"><img src="{tmpl_var name='IMAGES_DIR'}arrow_left.gif" hspace=2>previous</a><tmpl_else>&nbsp;</tmpl_if></td>
 	  <td colspan=15>
-	   <center>         
+	   <center>
 	  <tmpl_loop name="navbarinforank">
 	   <tmpl_if name="isLinked">
 	    <a href="{tmpl_var name="link"}"><tmpl_var name="text"></a>&nbsp;
@@ -87,6 +88,7 @@
 	  </td>
 	  <td class=number><tmpl_if name="RankNextButtonLink"><a href="{tmpl_var name="RankNextButtonLink"}">next<img src="{tmpl_var name='IMAGES_DIR'}arrow_right.gif" hspace=2></a><tmpl_else>&nbsp;</tmpl_if></td>
 	 </tr>
+</tmpl_if>
         </table>
        </td>
        <td class="rahmen" background="{tmpl_var name='IMAGES_DIR'}/bar_vertical_right.gif"></td>
@@ -247,10 +249,11 @@
            </tr>	
          </tmpl_loop>
          <!--NAVBAR FOR LASTGAMES-->	
+<tmpl_if name="GameNextButtonLink">
 	       <tr class="scoretable_dunkel">
 	        <td><tmpl_if name="GamePreviousButtonLink"><a href="{tmpl_var name="GamePreviousButtonLink"}#games"><img src="{tmpl_var name='IMAGES_DIR'}arrow_left.gif" hspace=2>previous</a><tmpl_else>&nbsp;</tmpl_if></td>
 	        <td colspan=4>
-	        <center>         
+	        <center>
 	         <tmpl_loop name="navbarinfogames">
 	          <tmpl_if name="isLinked">
 	           <a href="{tmpl_var name="link"}#games"><tmpl_var name="text"></a>&nbsp;
@@ -261,7 +264,8 @@
 	        </center>
 	        </td>
 	        <td class=number><tmpl_if name="GameNextButtonLink"><a href="{tmpl_var name="GameNextButtonLink"}#games">next<img src="{tmpl_var name='IMAGES_DIR'}arrow_right.gif" hspace=2></a><tmpl_else>&nbsp;</tmpl_if></td>
-	       </tr>          
+	       </tr>
+</tmpl_if>
         </table>
        </td>
        <td class="rahmen" background="{tmpl_var name='IMAGES_DIR'}/bar_vertical_right.gif"></td>
