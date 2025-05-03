@@ -149,6 +149,10 @@ function addUnCategorized($categories)
 	{
 		$members = $categories[$i]["members"];
 		
+		if (!is_array($members)) {
+			$members = array();
+		}
+		
 		$uncategorized = array();
 		
 		for($j = 0; $j<count($weapons); $j++)
@@ -161,7 +165,7 @@ function addUnCategorized($categories)
 					$found = true;
 				}
 			}
-			if($found == false) 
+			if($found == false)
 			{
 				array_push($uncategorized,array("weapon"=>$weapons[$j]["weapon"]));
 			}
