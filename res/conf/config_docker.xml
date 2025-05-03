@@ -3,8 +3,8 @@
  <database user="${DB_USER}" password="${DB_PASSWORD}" database="${DB_DATABASE}" port="${DB_PORT}">mariadb</database>
 
  <!--FILE MANAGEMENT-->
- <after-parsing>remain</after-parsing>
- <archive-folder>\archive\</archive-folder>
+ <after-parsing>archive</after-parsing>
+ <archive-folder>/app/logs/archive</archive-folder>
  <after-download>remain</after-download>
  <delete-decompressed-xml-files>false</delete-decompressed-xml-files>
  <rename-at-error>false</rename-at-error>
