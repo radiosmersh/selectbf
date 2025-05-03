@@ -28,7 +28,7 @@ function SQL_query($sql, $params = NULL, $types = "")
                 return $res;
         } catch (\mysqli_sql_exception $e) {
                 SQL_error($e->getMessage(), $sql);
-                return false;
+                return null;
         }
 }
 
