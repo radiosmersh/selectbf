@@ -318,8 +318,12 @@ if (!defined('vlibTemplateClassLoaded'))
 				$k = ($this->OPTIONS['CASELESS']) ? strtolower(trim($k)) : trim($k);
 				$this->_arrvars[$k] = array();
 				if ($this->OPTIONS['SET_LOOP_VAR'] && !empty($v)) $this->setvar($k, 1);
-				if (($this->_arrvars[$k] = $this->_arrayBuild($v)) == false) {
+				$built_array = $this->_arrayBuild($v);
+				if ($built_array === false) {
 					vlibTemplateError::raiseError('VT_WARNING_INVALID_ARR', WARNING,$k);
+					$this->_arrvars[$k] = array();
+				} else {
+					$this->_arrvars[$k] = $built_array;
 				}
 			}
 			return true;
@@ -1176,12 +1180,12 @@ if (!defined('vlibTemplateClassLoaded'))
 		function _parseLoop ($varname) {
 			array_push($this->_namespace, $varname);
 			$tempvar = count($this->_namespace) - 1;
-			$retstr = '$row_count_'.$tempvar.'=count($this->_arrvars';
+			$loop_var_str = '$this->_arrvars';
 			for ($i=0; $i < count($this->_namespace); $i++) {
-				$retstr .= "['".$this->_namespace[$i]."']";
-				if ($this->_namespace[$i] != $varname) $retstr .= "[\$_".$i."]";
+				$loop_var_str .= "['".$this->_namespace[$i]."']";
+				if ($this->_namespace[$i] != $varname) $loop_var_str .= "[\$_".$i."]";
 			}
-			$retstr.= '); for ($_'.$tempvar.'=0 ; $_'.$tempvar.'<$row_count_'.$tempvar.'; $_'.$tempvar.'++) {';
+			$retstr = '$row_count_'.$tempvar.' = is_array('.$loop_var_str.') ? count('.$loop_var_str.') : 0; for ($_'.$tempvar.'=0 ; $_'.$tempvar.'<$row_count_'.$tempvar.'; $_'.$tempvar.'++) {';
 			return $retstr;
 		}
 

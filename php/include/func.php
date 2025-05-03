@@ -381,8 +381,8 @@ function getDataForWeaponCategory($categoryid)
    	if($content)
    	{	
     	[$whereclause, $params] = createWhereClause($members,"k.weapon");
-    	$sql = "select p.name,p.id,sum(times_used) count from selectbf_kills_weapon k, selectbf_players p where k.player_id = p.id and ? group by p.name,p.id order by count DESC LIMIT 0,?";
-    	$res = SQL_query($sql,  [$whereclause, $params, $usage]);
+    	$sql = "select p.name,p.id,sum(times_used) count from selectbf_kills_weapon k, selectbf_players p where k.player_id = p.id and $whereclause group by p.name,p.id order by count DESC LIMIT 0,?";
+    	$res = SQL_query($sql,  array_merge($params, [$usage]));
        	$max = getMaxForField($res,"count");
        	
     
@@ -397,7 +397,7 @@ function getDataForWeaponCategory($categoryid)
    	}
    	else
    	{
-   		$data = null;
+   		$data = array();
    	}
     $totaltime = timer()- $starttime;
 	if($DEBUG>0) echo("<b><i>getDataForWeaponCategory</i></b> took $totaltime secs<br>");
@@ -1566,12 +1566,12 @@ function getTopThreeForRound($id)
    		$i++;
    	}
  	
- 	if($i==0) $topthree = null;
+ 	if($i==0) $topthree = array();
  	
-   	$totaltime = timer()- $starttime;
-	if($DEBUG>0) echo("<b><i>getTopThreeForRound</i></b> took $totaltime secs<br>");
-	
-	return $topthree; 
+ 	 	$totaltime = timer()- $starttime;
+ if($DEBUG>0) echo("<b><i>getTopThreeForRound</i></b> took $totaltime secs<br>");
+ 
+ return $topthree;
 }
 
 function getTeamStatsForRoundAndTeam($id,$team)
@@ -1601,12 +1601,12 @@ function getTeamStatsForRoundAndTeam($id,$team)
    		$i++;
    	}
    	
-   	if($i==0) $topthree= null;
+   	if($i==0) $topthree= array();
  
    	$totaltime = timer()- $starttime;
-	if($DEBUG>0) echo("<b><i>getTeamStatsForRoundAndTeam</i></b> took $totaltime secs<br>");
-	
-	return $topthree; 
+ if($DEBUG>0) echo("<b><i>getTeamStatsForRoundAndTeam</i></b> took $totaltime secs<br>");
+ 
+ return $topthree;
 }
 
 function getWingsOfFury()
