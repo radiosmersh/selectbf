@@ -167,7 +167,7 @@ public class PlayerSlot
 				}
 				else
 				{
-					//TODO: Error-Counter hochz‰hlen
+					//TODO: Error-Counter hochz√§hlen
 					this.endtime = starttime;
 				}
 			}

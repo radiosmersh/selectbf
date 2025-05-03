@@ -165,13 +165,13 @@ public class SelectBfGui
     {
         Menu menuBar = new Menu(shell, SWT.BAR);
         shell.setMenuBar(menuBar);
-//         Menütitel anlegen
+//         MenÃ¼titel anlegen
         MenuItem fileItem = new MenuItem(menuBar, SWT.CASCADE);
         fileItem.setText(Messages.getString("selectbf.gui.menu.file")); //$NON-NLS-1$
-//         Untermenü für diesen Menütitel anlegen
+//         UntermenÃ¼ fÃ¼r diesen MenÃ¼titel anlegen
         Menu fileMenu = new Menu(shell, SWT.DROP_DOWN);
         fileItem.setMenu(fileMenu);
-//         Menüeintrag anlegen
+//         MenÃ¼eintrag anlegen
         MenuItem item = new MenuItem(fileMenu, SWT.NULL);
         item.setText(Messages.getString("selectbf.gui.menu.configuration")); //$NON-NLS-1$
         //Configuration-Item Clicked

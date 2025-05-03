@@ -45,7 +45,7 @@ public class DatabaseContext
 		HashMap hash = null;
 		boolean containsRows = false;
 		
-		//Query ausführen
+		//Query ausfÃ¼hren
 		//out("Sending SQL to Database \""+sql+"\"");
 
 		Statement stat = createStatement();

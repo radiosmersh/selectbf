@@ -10,6 +10,7 @@
 	<fileset dir="${lib_dir}">
 		<include name="*.jar" />
 	</fileset>
+	<pathelement location="${resource_dir}/win32/swt/swt.jar"/>
 	<pathelement path="${java.class.path}" />
  </path>	
 
@@ -25,7 +26,7 @@
 		<!-- Changed by jrivett 2009Feb26
 			 Changed destdir to classes_dir - build expects classes there. -->
 		<!-- <javac srcdir="${src_dir}" destdir="${build_dir}" deprecation="on" debug="on"> -->
-		<javac srcdir="${src_dir}" destdir="${classes_dir}" deprecation="on" debug="on">
+		<javac srcdir="${src_dir}" destdir="${classes_dir}" deprecation="on" debug="on" encoding="UTF-8">
 			<classpath refid="classpath" />
 			<!-- Added by jrivett 2009Feb26
 				 Added to show more detailed warnings. -->
@@ -38,7 +39,7 @@
 	</target>
  
  <!--JARs up the compiled Parser-classes in the Java-Build dir-->
- <target name="jar_parser" depends="prepare,delete_thumbsdb">
+ <target name="jar_parser" depends="prepare,delete_thumbsdb,compile">
   <delete file="${build_dir}\selectbf.jar"/>
   <jar jarfile="${build_dir}\selectbf.jar" basedir="${classes_dir}">
    <manifest>
