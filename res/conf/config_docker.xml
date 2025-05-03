@@ -25,6 +25,6 @@
  	Also you can add as much sources as you want.
  --> 	
  <logs>
-  <dir live="true">/app/logs</dir>
+  <dir live="false">/app/logs</dir>
  </logs>
 </selectbf-config>
