@@ -16,29 +16,39 @@ finally {
 function SQL_query($sql, $params = NULL, $types = "")
 {
         global $conn;
-        $stmt = $conn->prepare($sql);
-        if ($params)
-        {
-                $types = $types ?: str_repeat("s", count($params));
-                $stmt->bind_param($types, ...$params);
+        try {
+                $stmt = $conn->prepare($sql);
+                if ($params)
+                {
+                        $types = $types ?: str_repeat("s", count($params));
+                        $stmt->bind_param($types, ...$params);
+                }
+                $stmt->execute();
+                $res = $stmt->get_result();
+                return $res;
+        } catch (\mysqli_sql_exception $e) {
+                SQL_error($e->getMessage(), $sql);
+                return false;
         }
-        $stmt->execute();
-        $res = $stmt->get_result();
-	return $res;
 }
 
 function SQL_oneRowQuery($sql, $params = NULL, $types = "")
 {
         global $conn;
-        $stmt = $conn->prepare($sql);
-        if ($params)
-        {
-                $types = $types ?: str_repeat("s", count($params));
-                $stmt->bind_param($types, ...$params);
+        try {
+                $stmt = $conn->prepare($sql);
+                if ($params)
+                {
+                        $types = $types ?: str_repeat("s", count($params));
+                        $stmt->bind_param($types, ...$params);
+                }
+                $stmt->execute();
+                $result = $stmt->get_result();
+                return $result->fetch_assoc();
+        } catch (\mysqli_sql_exception $e) {
+                SQL_error($e->getMessage(), $sql);
+                return null;
         }
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_assoc();
 }
 
 
