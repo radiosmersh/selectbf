@@ -36,6 +36,7 @@ services:
       - app-network
 
   logparser:
+    profiles: ['logparser']
     build:
       context: .
       dockerfile: Dockerfile.logparser
