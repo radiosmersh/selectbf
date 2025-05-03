@@ -1,0 +1,19 @@
+FROM openjdk:8
+
+RUN \
+  apt-get update \
+  && apt-get -y install gettext-base
+
+WORKDIR /app
+
+COPY res/linux/selectbf-docker.sh ./selectbf.sh
+COPY lib ./lib
+COPY build/selectbf.jar .
+
+COPY conf/ ./conf/
+
+COPY res/conf/config_docker.xml ./config.xml
+
+RUN chmod +x /app/selectbf.sh
+
+CMD ["./selectbf.sh"]
