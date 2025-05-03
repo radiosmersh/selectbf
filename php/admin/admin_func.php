@@ -717,7 +717,8 @@ function getValueForParameter($str)
 
 function setValueForParameter($value, $parameter)
 {
-	$value = mysqli_real_escape_string($value);
+	global $conn;
+	$value = mysqli_real_escape_string($conn, $value);
 	SQL_query("update selectbf_params SET value=?,inserttime=now() WHERE name=?", [$value, $parameter], 'ss');
 	$_SESSION["$parameter"] = $value;
 }
