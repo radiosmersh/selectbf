@@ -46,8 +46,6 @@ services:
     env_file: .env
     networks:
       - app-network
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     depends_on:
       - mariadb
 
