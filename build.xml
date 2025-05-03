@@ -36,9 +36,15 @@
 			<!-- <compilerarg value="-target 1.4"/> -->
 			<!-- <compilerarg value="-source 1.4"/> -->			
 		</javac>
+		<!-- Added by Roo to include resource files in the build -->
+		<copy todir="${classes_dir}">
+			<fileset dir="${src_dir}">
+				<include name="**/*.properties"/>
+			</fileset>
+		</copy>
 	</target>
- 
- <!--JARs up the compiled Parser-classes in the Java-Build dir-->
+
+<!--JARs up the compiled Parser-classes in the Java-Build dir-->
  <target name="jar_parser" depends="prepare,delete_thumbsdb,compile">
   <delete file="${build_dir}\selectbf.jar"/>
   <jar jarfile="${build_dir}\selectbf.jar" basedir="${classes_dir}">
