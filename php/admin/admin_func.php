@@ -287,7 +287,7 @@ function addAssignment($item,$mod,$type)
 {
 	$item = addslashes($item);
 	$mod = addslashes($mod);
-	SQL_query("INSERT INTO selectbf_modassignment (item,mod,type,inserttime) VALUES (?, ?, ?, now())", [$item, $mod, $type]);
+	SQL_query("INSERT INTO selectbf_modassignment (item,'mod',type,inserttime) VALUES (?, ?, ?, now())", [$item, $mod, $type]);
 }
 
 function deleteAssignment($id)
